@@ -1,0 +1,2287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BSH Thrombocytosis Guideline - Interactive Learning Platform</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+            --success-color: #27ae60;
+            --warning-color: #f39c12;
+            --light-bg: #ecf0f1;
+            --card-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            --transition: all 0.3s ease;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header */
+        header {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: var(--card-shadow);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        header h1 {
+            color: var(--primary-color);
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            color: #666;
+            font-size: 1.1em;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 5px 15px;
+            background: var(--secondary-color);
+            color: white;
+            border-radius: 20px;
+            font-size: 0.9em;
+            margin-top: 10px;
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: var(--card-shadow);
+        }
+
+        .progress-bar {
+            height: 30px;
+            background: var(--light-bg);
+            border-radius: 15px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--secondary-color), var(--success-color));
+            border-radius: 15px;
+            transition: width 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        /* Navigation */
+        .nav-container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: var(--card-shadow);
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .nav-btn {
+            padding: 12px 24px;
+            background: var(--light-bg);
+            border: 2px solid transparent;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 0.95em;
+            font-weight: 600;
+        }
+
+        .nav-btn:hover {
+            background: var(--secondary-color);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .nav-btn.active {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--secondary-color);
+        }
+
+        .nav-btn.completed {
+            background: var(--success-color);
+            color: white;
+        }
+
+        /* Main Content */
+        .content-area {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: var(--card-shadow);
+            margin-bottom: 30px;
+            min-height: 500px;
+        }
+
+        .section {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h2 {
+            color: var(--primary-color);
+            font-size: 2em;
+            margin-bottom: 20px;
+            border-bottom: 3px solid var(--secondary-color);
+            padding-bottom: 10px;
+        }
+
+        h3 {
+            color: var(--secondary-color);
+            font-size: 1.5em;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+
+        h4 {
+            color: var(--primary-color);
+            font-size: 1.2em;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        /* Cards */
+        .card {
+            background: var(--light-bg);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 5px solid var(--secondary-color);
+            transition: var(--transition);
+        }
+
+        .card:hover {
+            transform: translateX(5px);
+            box-shadow: var(--card-shadow);
+        }
+
+        .card.warning {
+            border-left-color: var(--warning-color);
+            background: #fff3cd;
+        }
+
+        .card.success {
+            border-left-color: var(--success-color);
+            background: #d4edda;
+        }
+
+        .card.danger {
+            border-left-color: var(--accent-color);
+            background: #f8d7da;
+        }
+
+        /* Algorithm Flowchart */
+        .flowchart {
+            background: white;
+            border: 2px solid var(--secondary-color);
+            border-radius: 10px;
+            padding: 30px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .flow-box {
+            background: var(--secondary-color);
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px auto;
+            max-width: 600px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .flow-box:hover {
+            transform: scale(1.05);
+            box-shadow: var(--card-shadow);
+        }
+
+        .flow-arrow {
+            font-size: 2em;
+            color: var(--primary-color);
+            margin: 10px 0;
+        }
+
+        /* Interactive Quiz */
+        .quiz-container {
+            background: var(--light-bg);
+            padding: 30px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+
+        .question {
+            margin-bottom: 25px;
+        }
+
+        .question h4 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .option {
+            padding: 15px;
+            background: white;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .option:hover {
+            border-color: var(--secondary-color);
+            background: #f8f9fa;
+        }
+
+        .option.selected {
+            border-color: var(--secondary-color);
+            background: var(--secondary-color);
+            color: white;
+        }
+
+        .option.correct {
+            border-color: var(--success-color);
+            background: var(--success-color);
+            color: white;
+        }
+
+        .option.incorrect {
+            border-color: var(--accent-color);
+            background: var(--accent-color);
+            color: white;
+        }
+
+        .submit-quiz {
+            margin-top: 20px;
+            padding: 15px 40px;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: bold;
+            transition: var(--transition);
+        }
+
+        .submit-quiz:hover {
+            background: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+
+        .quiz-result {
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+
+        /* Case Scenarios */
+        .case-scenario {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+
+        .case-scenario h4 {
+            color: white;
+            font-size: 1.3em;
+            margin-bottom: 15px;
+        }
+
+        .case-details {
+            background: rgba(255,255,255,0.1);
+            padding: 20px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+
+        .reveal-answer {
+            padding: 12px 30px;
+            background: white;
+            color: var(--primary-color);
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: var(--transition);
+            margin-top: 15px;
+        }
+
+        .reveal-answer:hover {
+            transform: scale(1.05);
+        }
+
+        .answer-box {
+            display: none;
+            background: rgba(255,255,255,0.95);
+            color: var(--primary-color);
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 15px;
+        }
+
+        .answer-box.show {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        /* Table Styles */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+
+        th {
+            background: var(--primary-color);
+            color: white;
+            font-weight: bold;
+        }
+
+        tr:nth-child(even) {
+            background: var(--light-bg);
+        }
+
+        tr:hover {
+            background: #f8f9fa;
+        }
+
+        /* Key Points */
+        .key-points {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+
+        .key-points ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .key-points li {
+            padding: 10px 0;
+            padding-left: 30px;
+            position: relative;
+        }
+
+        .key-points li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        /* Buttons */
+        .btn-primary {
+            background: var(--primary-color);
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: bold;
+            transition: var(--transition);
+            margin: 10px 5px;
+        }
+
+        .btn-primary:hover {
+            background: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: var(--light-bg);
+            color: var(--primary-color);
+            padding: 12px 30px;
+            border: 2px solid var(--primary-color);
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: bold;
+            transition: var(--transition);
+            margin: 10px 5px;
+        }
+
+        .btn-secondary:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        /* Navigation Arrows */
+        .section-nav {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 2px solid var(--light-bg);
+        }
+
+        /* Diagnostic Algorithm Interactive */
+        .diagnostic-tree {
+            background: var(--light-bg);
+            padding: 30px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+
+        .tree-node {
+            background: white;
+            border: 2px solid var(--secondary-color);
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px auto;
+            max-width: 500px;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .tree-node:hover {
+            transform: scale(1.02);
+            box-shadow: var(--card-shadow);
+            background: var(--secondary-color);
+            color: white;
+        }
+
+        .tree-node.decision {
+            background: #fff3cd;
+            border-color: var(--warning-color);
+        }
+
+        .tree-node.diagnosis {
+            background: #d4edda;
+            border-color: var(--success-color);
+        }
+
+        /* Glossary */
+        .glossary-term {
+            background: white;
+            border-left: 4px solid var(--secondary-color);
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .glossary-term:hover {
+            background: var(--light-bg);
+            transform: translateX(5px);
+        }
+
+        .glossary-term dt {
+            font-weight: bold;
+            color: var(--primary-color);
+            font-size: 1.1em;
+        }
+
+        .glossary-term dd {
+            margin-top: 5px;
+            color: #666;
+        }
+
+        /* Learning Objectives */
+        .objectives {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+
+        .objectives h3 {
+            color: white;
+            border-bottom: 2px solid rgba(255,255,255,0.3);
+            padding-bottom: 10px;
+        }
+
+        .objectives ol {
+            margin-left: 20px;
+            margin-top: 15px;
+        }
+
+        .objectives li {
+            margin: 10px 0;
+            line-height: 1.8;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+
+            header h1 {
+                font-size: 1.8em;
+            }
+
+            .content-area {
+                padding: 20px;
+            }
+
+            .nav-buttons {
+                flex-direction: column;
+            }
+
+            .nav-btn {
+                width: 100%;
+            }
+
+            h2 {
+                font-size: 1.5em;
+            }
+        }
+
+        /* Tooltip */
+        .tooltip {
+            position: relative;
+            display: inline-block;
+            border-bottom: 2px dotted var(--secondary-color);
+            cursor: help;
+        }
+
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 300px;
+            background-color: var(--primary-color);
+            color: white;
+            text-align: center;
+            padding: 10px;
+            border-radius: 6px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -150px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        /* Achievement Badge */
+        .achievement {
+            background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            margin: 20px 0;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+
+        .star-rating {
+            font-size: 2em;
+            color: #ffd700;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <h1>🩺 BSH Thrombocytosis Guideline 2025</h1>
+            <p>Interactive Learning Platform - Investigation and Management without JAK2, CALR or MPL Mutations</p>
+            <span class="badge">Professional Education</span>
+            <span class="badge">Evidence-Based</span>
+            <span class="badge">#BloodDoctor</span>
+        </header>
+
+        <!-- Progress Tracker -->
+        <div class="progress-container">
+            <h3 style="margin-bottom: 10px; color: var(--primary-color);">Your Learning Progress</h3>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressBar">0%</div>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <nav class="nav-container">
+            <div class="nav-buttons" id="navButtons">
+                <button class="nav-btn active" data-section="intro">Introduction</button>
+                <button class="nav-btn" data-section="aetiology">Aetiology</button>
+                <button class="nav-btn" data-section="investigation">Investigation</button>
+                <button class="nav-btn" data-section="terminology">Diagnostic Terms</button>
+                <button class="nav-btn" data-section="management">Management</button>
+                <button class="nav-btn" data-section="algorithm">Algorithm</button>
+                <button class="nav-btn" data-section="cases">Case Scenarios</button>
+                <button class="nav-btn" data-section="quiz">Knowledge Quiz</button>
+                <button class="nav-btn" data-section="summary">Key Summary</button>
+            </div>
+        </nav>
+
+        <!-- Main Content Area -->
+        <div class="content-area">
+            <!-- Section 1: Introduction -->
+            <div class="section active" id="intro">
+                <h2>📚 Welcome to the Interactive Learning Platform</h2>
+
+                <div class="objectives">
+                    <h3>Learning Objectives</h3>
+                    <ol>
+                        <li>Understand the approach to investigating thrombocytosis without classical MPN driver mutations</li>
+                        <li>Recognize when to perform bone marrow biopsy and extended genomic testing</li>
+                        <li>Apply the new diagnostic terminology (ITUS, ITAM, CTUS)</li>
+                        <li>Develop risk-stratified management strategies</li>
+                        <li>Differentiate between reactive and clonal thrombocytosis</li>
+                    </ol>
+                </div>
+
+                <h3>Why This Guideline Matters</h3>
+                <div class="card">
+                    <h4>The Clinical Challenge</h4>
+                    <ul>
+                        <li><strong>10-15%</strong> of essential thrombocythaemia (ET) cases are "triple-negative"</li>
+                        <li><strong>>80%</strong> of all thrombocytosis is secondary (reactive)</li>
+                        <li>Significant practice variation exists in investigation strategies</li>
+                        <li>Previous guidelines focused on mutation-positive cases</li>
+                    </ul>
+                </div>
+
+                <div class="card success">
+                    <h4>What You'll Learn</h4>
+                    <p>This interactive platform will guide you through:</p>
+                    <ul>
+                        <li>✓ Systematic approach to thrombocytosis investigation</li>
+                        <li>✓ When and when NOT to perform extensive testing</li>
+                        <li>✓ Novel diagnostic categories and their clinical implications</li>
+                        <li>✓ Evidence-based management recommendations</li>
+                        <li>✓ Real-world case scenarios</li>
+                    </ul>
+                </div>
+
+                <h3>How to Use This Platform</h3>
+                <div class="card warning">
+                    <p><strong>💡 Learning Tips:</strong></p>
+                    <ul>
+                        <li>Navigate through sections using the menu above</li>
+                        <li>Complete each section to track your progress</li>
+                        <li>Hover over <span class="tooltip">technical terms<span class="tooltiptext">Like this! Definitions appear when you hover.</span></span> for quick definitions</li>
+                        <li>Test your knowledge with interactive quizzes</li>
+                        <li>Apply learning through clinical case scenarios</li>
+                        <li>Mark sections as complete to unlock achievements!</li>
+                    </ul>
+                </div>
+
+                <div class="section-nav">
+                    <button class="btn-secondary" disabled>← Previous</button>
+                    <button class="btn-primary" onclick="markComplete('intro'); navigateTo('aetiology')">Next: Aetiology →</button>
+                </div>
+            </div>
+
+            <!-- Section 2: Aetiology -->
+            <div class="section" id="aetiology">
+                <h2>🔬 Aetiology of Thrombocytosis</h2>
+
+                <h3>Overview: Four Main Categories</h3>
+
+                <div class="flowchart">
+                    <div class="flow-box" style="background: var(--accent-color);">
+                        <strong>THROMBOCYTOSIS (Platelets >450×10⁹/L)</strong>
+                    </div>
+                    <div class="flow-arrow">↓</div>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; margin-top: 20px;">
+                        <div class="flow-box" style="background: var(--success-color);">Reactive (>80%)</div>
+                        <div class="flow-box" style="background: var(--warning-color);">Clonal Myeloid</div>
+                        <div class="flow-box" style="background: var(--secondary-color);">Clonal Haematopoiesis</div>
+                        <div class="flow-box" style="background: var(--primary-color);">Hereditary</div>
+                    </div>
+                </div>
+
+                <h3>1. Reactive (Secondary) Thrombocytosis</h3>
+                <div class="card">
+                    <h4>Pathophysiology</h4>
+                    <p><strong>Thrombopoietin (TPO)</strong> is the primary regulator:</p>
+                    <ul>
+                        <li>Produced by the liver</li>
+                        <li>Cleared via receptors (TPOR/MPL) on megakaryocytes and platelets</li>
+                        <li>Plasma TPO regulated by platelet mass</li>
+                        <li>Acute phase reactants (IL-6) increase hepatic TPO production</li>
+                    </ul>
+                </div>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Category</th>
+                            <th>Common Causes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Deficiency/Loss</strong></td>
+                            <td>Iron deficiency, bleeding</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Inflammation</strong></td>
+                            <td>Infection, autoimmune disease, malignancy</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Tissue Damage</strong></td>
+                            <td>Trauma, surgery, burns</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Splenic</strong></td>
+                            <td>Hyposplenism, splenectomy</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Metabolic</strong></td>
+                            <td>Obesity, metabolic syndrome</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Drug-Related</strong></td>
+                            <td>TPO agonists, ESAs, chemotherapy recovery</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>2. Clonal Myeloid Disorders</h3>
+                <div class="card warning">
+                    <h4>Classical MPNs - Driver Mutations</h4>
+                    <ul>
+                        <li><strong>JAK2 V617F:</strong> 50-60% of ET</li>
+                        <li><strong>CALR exon 9 frameshift:</strong> 25-35% of ET</li>
+                        <li><strong>MPL exon 10 variants:</strong> 5-10% of ET</li>
+                        <li><strong>Triple-negative ET:</strong> 10-15% of ET</li>
+                    </ul>
+                </div>
+
+                <div class="card success">
+                    <h4>Triple-Negative ET Characteristics</h4>
+                    <ul>
+                        <li>✓ Predominantly young females</li>
+                        <li>✓ Most lack definitive clonal evidence</li>
+                        <li>✓ Lower myelofibrotic transformation risk</li>
+                        <li>✓ Lower thrombosis risk</li>
+                        <li>✓ Highly favourable survival</li>
+                    </ul>
+                </div>
+
+                <h3>3. Clonal Haematopoiesis (CH)</h3>
+                <div class="card">
+                    <p><strong>Definition:</strong> Presence of clonal blood cell populations in otherwise healthy individuals</p>
+                    <p><strong>Common genes:</strong> DNMT3A, TET2, ASXL1</p>
+                    <p><strong>Prevalence:</strong></p>
+                    <ul>
+                        <li>~10% of individuals >70 years (conventional sequencing)</li>
+                        <li>>66% with sensitive sequencing (VAF <1%)</li>
+                    </ul>
+                    <p><strong>Clinical significance:</strong> May indicate emergent haematological malignancy, especially if:</p>
+                    <ul>
+                        <li>High VAF (>10%)</li>
+                        <li>Multiple pathogenic variants</li>
+                        <li>Younger individuals</li>
+                        <li>Additional cytopenias</li>
+                    </ul>
+                </div>
+
+                <h3>4. Hereditary Thrombocytosis</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Gene</th>
+                            <th>Key Features</th>
+                            <th>Clinical Implications</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>JAK2 germline</strong></td>
+                            <td>Various variants (V617I, R564Q/L, etc.)</td>
+                            <td>Variable thrombotic risk</td>
+                        </tr>
+                        <tr>
+                            <td><strong>MPL germline</strong></td>
+                            <td>S505N, P106L, R170H, etc.</td>
+                            <td>S505N: high thrombotic risk, fibrosis progression</td>
+                        </tr>
+                        <tr>
+                            <td><strong>THPO</strong></td>
+                            <td>Various regulatory variants</td>
+                            <td>May associate with distal limb defects</td>
+                        </tr>
+                        <tr>
+                            <td><strong>SH2B3</strong></td>
+                            <td>Biallelic variants</td>
+                            <td>Autoimmune features, hepatosplenomegaly</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="section-nav">
+                    <button class="btn-secondary" onclick="navigateTo('intro')">← Previous</button>
+                    <button class="btn-primary" onclick="markComplete('aetiology'); navigateTo('investigation')">Next: Investigation →</button>
+                </div>
+            </div>
+
+            <!-- Section 3: Investigation -->
+            <div class="section" id="investigation">
+                <h2>🔍 Investigation Approach</h2>
+
+                <div class="card danger">
+                    <h4>⚠️ Critical First Principle</h4>
+                    <p><strong>Over 80% of thrombocytosis is REACTIVE</strong> - thorough exclusion of secondary causes is fundamental!</p>
+                </div>
+
+                <h3>Stage 1: Initial Clinical Assessment & Testing</h3>
+
+                <div class="diagnostic-tree">
+                    <h4 style="color: var(--primary-color); margin-bottom: 20px;">Clinical History & Examination</h4>
+                    <div class="tree-node">
+                        <strong>Symptoms:</strong> Headaches, erythromelalgia, microvascular disturbances
+                    </div>
+                    <div class="tree-node">
+                        <strong>Risk Factors:</strong> Cardiovascular risks, thrombotic/haemorrhagic history
+                    </div>
+                    <div class="tree-node">
+                        <strong>Family History:</strong> Thrombocytosis, MPN, malignancy
+                    </div>
+                    <div class="tree-node">
+                        <strong>Examination:</strong> BMI, splenomegaly, signs of systemic disease
+                    </div>
+                </div>
+
+                <h4>First-Line Investigations</h4>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Test</th>
+                            <th>Purpose</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Blood Film</td>
+                            <td>Spurious thrombocytosis, other myeloid features</td>
+                        </tr>
+                        <tr>
+                            <td>Iron Studies</td>
+                            <td>Exclude iron deficiency</td>
+                        </tr>
+                        <tr>
+                            <td>CRP</td>
+                            <td>Inflammatory markers</td>
+                        </tr>
+                        <tr>
+                            <td>CXR (age >40)</td>
+                            <td>Malignancy screening</td>
+                        </tr>
+                        <tr>
+                            <td>Abdominal US</td>
+                            <td>If splenomegaly suspected</td>
+                        </tr>
+                        <tr>
+                            <td>JAK2, CALR, MPL</td>
+                            <td>MPN driver mutations (peripheral blood)</td>
+                        </tr>
+                        <tr>
+                            <td>BCR::ABL1</td>
+                            <td>If triple-negative (exclude CML)</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="card warning">
+                    <h4>⚠️ Important Note</h4>
+                    <p><strong>Serum TPO levels</strong> do NOT distinguish reactive from clonal thrombocytosis and are <strong>NOT routinely recommended</strong>.</p>
+                </div>
+
+                <h3>Stage 2: When to Perform Comprehensive Investigations</h3>
+
+                <div class="card success">
+                    <h4>✅ GRADE 1C - Strong Recommendation</h4>
+                    <p><strong>Perform BM biopsy + NGS-MGP +/- cytogenetics if:</strong></p>
+                    <ul>
+                        <li>Age >60 years, OR</li>
+                        <li>Age 40-60 with significant cardiovascular risk factors*, OR</li>
+                        <li>Prior vascular event(s), OR</li>
+                        <li>Platelets >1500×10⁹/L</li>
+                    </ul>
+                    <p style="font-size: 0.9em; margin-top: 10px;">*Hypertension, diabetes, hypercholesterolaemia on therapy, or high QRISK3 score</p>
+                </div>
+
+                <div class="card">
+                    <h4>🤔 GRADE 2C - Consider Offering</h4>
+                    <p><strong>May offer BM biopsy + NGS-MGP +/- cytogenetics if:</strong></p>
+                    <ul>
+                        <li>Age <60 years without significant vascular risk, BUT</li>
+                        <li>Platelets 600-1500×10⁹/L AND/OR</li>
+                        <li>Unexplained pertinent symptoms (headaches, erythromelalgia)</li>
+                    </ul>
+                </div>
+
+                <div class="card danger">
+                    <h4>❌ NOT Required</h4>
+                    <p><strong>BM biopsy and additional genomics NOT needed if:</strong></p>
+                    <ul>
+                        <li>Age <60 years</li>
+                        <li>No previous vascular events</li>
+                        <li>No cardiovascular risk factors or symptoms</li>
+                        <li>Mild thrombocytosis (<600×10⁹/L)</li>
+                    </ul>
+                    <p style="margin-top: 10px;"><strong>BUT:</strong> Secondary causes MUST be fully excluded!</p>
+                </div>
+
+                <h3>Bone Marrow Histology</h3>
+                <div class="card">
+                    <p><strong>Key Features of ET:</strong></p>
+                    <ul>
+                        <li>Megakaryocyte proliferation</li>
+                        <li>Increased enlarged, mature megakaryocytes</li>
+                        <li><strong>Hyperlobated nuclei</strong> (characteristic finding)</li>
+                    </ul>
+                    <p style="margin-top: 15px;"><strong>Limitations:</strong></p>
+                    <ul>
+                        <li>Subjective interpretation (18% diagnosis changes after expert review)</li>
+                        <li>Borderline features common in triple-negative cases</li>
+                        <li>Inter-observer variability exists</li>
+                    </ul>
+                </div>
+
+                <div class="card success">
+                    <h4>💡 Best Practice</h4>
+                    <p>All BM histology should undergo <strong>expert haematopathologist review</strong> within a <strong>multidisciplinary team (MDT)</strong> setting, integrating molecular and clinical features.</p>
+                </div>
+
+                <h3>Next-Generation Sequencing (NGS) Myeloid Gene Panel</h3>
+                <div class="card">
+                    <h4>NHS England Minimum Panel Includes:</h4>
+                    <p>ASXL1, CALR, CBL, CSF3R, CUX1, DNMT3A, EZH2, HRAS, IDH1, IDH2, IKZF1, JAK2, KIT, KRAS, MPL, NFE2, NRAS, RUNX1, SETBP1, SF3B1, SH2B3, SRSF2, TET2, TP53, U2AF1, ZRSR2</p>
+
+                    <h4 style="margin-top: 15px;">Findings in Triple-Negative Thrombocytosis:</h4>
+                    <ul>
+                        <li>70-85% negative</li>
+                        <li>Non-canonical JAK2/MPL variants (minority)</li>
+                        <li>Putative pathogenic germline variants</li>
+                        <li>Variants in CH-associated genes</li>
+                    </ul>
+                </div>
+
+                <h3>Paediatric Considerations</h3>
+                <div class="card warning">
+                    <h4>👶 Special Considerations for Children</h4>
+                    <ul>
+                        <li>>50% of paediatric ET is triple-negative</li>
+                        <li>Low complication rates</li>
+                        <li><strong>Higher platelet thresholds:</strong>
+                            <ul>
+                                <li>650×10⁹/L at 2 months</li>
+                                <li>Decreasing to 450×10⁹/L by 6 years</li>
+                            </ul>
+                        </li>
+                        <li><strong>Additional tests:</strong> Parental blood counts, inherited thrombocytosis panel</li>
+                        <li><strong>Higher BM threshold:</strong> Consider 800-1000×10⁹/L in asymptomatic children</li>
+                    </ul>
+                </div>
+
+                <div class="section-nav">
+                    <button class="btn-secondary" onclick="navigateTo('aetiology')">← Previous</button>
+                    <button class="btn-primary" onclick="markComplete('investigation'); navigateTo('terminology')">Next: Diagnostic Terms →</button>
+                </div>
+            </div>
+
+            <!-- Section 4: Diagnostic Terminology -->
+            <div class="section" id="terminology">
+                <h2>📋 Novel Diagnostic Terminology</h2>
+
+                <div class="card danger">
+                    <h4>🎯 Why New Terms?</h4>
+                    <p>Current WHO/ICC classifications have limitations for triple-negative cases:</p>
+                    <ul>
+                        <li>Histological interpretation is subjective</li>
+                        <li>Triple-negative ET has distinctive natural history vs. mutation-positive ET</li>
+                        <li>No category exists for thrombocytosis without reactive cause OR typical ET morphology</li>
+                        <li>Patient counselling challenging when extrapolating from mutation-positive data</li>
+                    </ul>
+                </div>
+
+                <h3>Four New Diagnostic Categories</h3>
+
+                <div class="flowchart">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 20px 0;">
+                        <div style="text-align: center;">
+                            <div style="background: var(--primary-color); color: white; padding: 10px; border-radius: 5px; margin-bottom: 10px;">
+                                <strong>NO Clonal Marker</strong>
+                            </div>
+                            <div class="tree-node diagnosis">
+                                <strong>Normal Megakaryocytes</strong><br>
+                                ↓<br>
+                                ITUS
+                            </div>
+                            <div class="tree-node diagnosis">
+                                <strong>Atypical Megakaryocytes</strong><br>
+                                ↓<br>
+                                ITAM
+                            </div>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="background: var(--secondary-color); color: white; padding: 10px; border-radius: 5px; margin-bottom: 10px;">
+                                <strong>Clonal Marker Present</strong>
+                            </div>
+                            <div class="tree-node diagnosis">
+                                <strong>Normal Megakaryocytes</strong><br>
+                                ↓<br>
+                                CTUS
+                            </div>
+                            <div class="tree-node diagnosis">
+                                <strong>Atypical Megakaryocytes</strong><br>
+                                ↓<br>
+                                Triple-negative ET with clonal marker(s)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <h3>1. ITUS - Idiopathic Thrombocytosis of Undetermined Significance</h3>
+                <div class="card">
+                    <h4>Diagnostic Criteria:</h4>
+                    <ul>
+                        <li>✓ Persistent* thrombocytosis >450×10⁹/L, no reactive cause</li>
+                        <li>✓ <strong>Negative</strong> broad genomic analysis (NGS-MGP)</li>
+                        <li>✓ Histology: normal or increased megakaryocytes <strong>WITHOUT</strong> significant morphological atypia</li>
+                    </ul>
+
+                    <h4 style="margin-top: 15px;">Clinical Implications:</h4>
+                    <ul>
+                        <li>No evidence of clonal process</li>
+                        <li>Uncertain aetiology</li>
+                        <li>Likely indolent course</li>
+                    </ul>
+
+                    <h4 style="margin-top: 15px;">Management:</h4>
+                    <ul>
+                        <li>NO routine antiplatelet therapy</li>
+                        <li>Annual FBC surveillance</li>
+                        <li>Re-evaluate if significant change in counts, new vascular events, or at age 60</li>
+                    </ul>
+                </div>
+
+                <h3>2. ITAM - Idiopathic Thrombocytosis with Atypical Megakaryocytes</h3>
+                <div class="card success">
+                    <h4>Diagnostic Criteria:</h4>
+                    <ul>
+                        <li>✓ Persistent* thrombocytosis >450×10⁹/L, no reactive cause</li>
+                        <li>✓ <strong>Negative</strong> broad genomic analysis (NGS-MGP) and cytogenetics</li>
+                        <li>✓ Histology: increased megakaryocytes with <strong>large forms showing hyperlobated nuclei</strong></li>
+                    </ul>
+
+                    <p style="margin-top: 15px;"><strong>Alternative term:</strong> "Triple-negative ET without clonal markers" (aligns with WHO terminology)</p>
+
+                    <h4 style="margin-top: 15px;">Management:</h4>
+                    <ul>
+                        <li><strong>Consider aspirin</strong> if age >60 or cardiovascular risk factors</li>
+                        <li><strong>Consider cytoreduction</strong> if:
+                            <ul>
+                                <li>Age >60</li>
+                                <li>Vascular event where thrombocytosis implicated</li>
+                                <li>Platelets >1500×10⁹/L</li>
+                                <li>Refractory symptoms</li>
+                                <li>Multiple cardiovascular risk factors</li>
+                            </ul>
+                        </li>
+                        <li><strong>Preferred agent:</strong> Interferon-alpha (no DNA-damaging mechanism)</li>
+                    </ul>
+                </div>
+
+                <h3>3. CTUS - Clonal Thrombocytosis of Undetermined Significance</h3>
+                <div class="card warning">
+                    <h4>Diagnostic Criteria:</h4>
+                    <ul>
+                        <li>✓ Persistent* thrombocytosis >450×10⁹/L, no reactive cause</li>
+                        <li>✓ <strong>Positive</strong> for somatic mutations in CH driver genes (NOT JAK2/CALR/MPL)
+                            <ul>
+                                <li>VAF ≥2% (≥4% for X-linked in males)</li>
+                                <li>OR clonal cytogenetic abnormality</li>
+                            </ul>
+                        </li>
+                        <li>✓ Histology: normal or increased megakaryocytes <strong>WITHOUT</strong> ET-like atypia</li>
+                        <li>✓ No features of other myeloid neoplasm</li>
+                    </ul>
+
+                    <h4 style="margin-top: 15px;">Clinical Implications:</h4>
+                    <ul>
+                        <li>Evidence of clonal haematopoiesis</li>
+                        <li>Falls outside current WHO/ICC classifications</li>
+                        <li>Uncertain natural history and vascular risk</li>
+                        <li>Unknown progression risk to classical ET</li>
+                    </ul>
+
+                    <h4 style="margin-top: 15px;">Management:</h4>
+                    <ul>
+                        <li><strong>Conservative cytoreduction threshold</strong> - only if pronounced thrombocytosis contributing to symptoms or unexplained vascular event</li>
+                        <li><strong>Cardiovascular risk optimization crucial</strong> (especially smoking cessation)</li>
+                        <li>Could consider aspirin if age >60 or cardiovascular risks</li>
+                        <li>Counsel patients that benefits of therapy are uncertain</li>
+                    </ul>
+                </div>
+
+                <h3>4. Triple-Negative ET with Clonal Marker(s)</h3>
+                <div class="card">
+                    <h4>Diagnostic Criteria:</h4>
+                    <ul>
+                        <li>✓ Persistent* thrombocytosis >450×10⁹/L, no reactive cause</li>
+                        <li>✓ <strong>Positive</strong> for mutations in CH driver genes (NOT JAK2/CALR/MPL), VAF ≥2%
+                            <ul>
+                                <li>OR clonal cytogenetic abnormality</li>
+                            </ul>
+                        </li>
+                        <li>✓ Histology: increased megakaryocytes with <strong>large forms showing hyperlobated nuclei</strong></li>
+                        <li>✓ No features of other myeloid neoplasm</li>
+                    </ul>
+
+                    <h4 style="margin-top: 15px;">Clinical Implications:</h4>
+                    <ul>
+                        <li>Clonal marker supports ET diagnosis (WHO minor criterion)</li>
+                        <li>Subcategorization distinguishes from cases without clonal markers</li>
+                    </ul>
+
+                    <h4 style="margin-top: 15px;">Management:</h4>
+                    <ul>
+                        <li>Follow <strong>ITAM guidance</strong></li>
+                        <li>Low threshold for repeat BM/genomic assessment if atypical features develop</li>
+                    </ul>
+                </div>
+
+                <div class="card danger">
+                    <h4>⚠️ Important Notes</h4>
+                    <p>*<strong>Persistence:</strong> Thrombocytosis must be persistent for at least <strong>3 months</strong> before confirming diagnosis. Longer surveillance may be preferable for mild/variable thrombocytosis.</p>
+                    <p style="margin-top: 10px;"><strong>Minimum VAF threshold:</strong> 2% for autosomal genes, 4% for X-linked genes in males (aligns with clonal cytopenia of undetermined significance criteria)</p>
+                </div>
+
+                <h3>Special Consideration: Very Low VAF JAK2 V617F</h3>
+                <div class="card warning">
+                    <p><strong>If JAK2 V617F detected at VAF <1%:</strong></p>
+                    <ul>
+                        <li>May not meet criteria for ET</li>
+                        <li>Consider CTUS-type management if histology non-diagnostic</li>
+                        <li>Repeat mutational testing (with VAF) if platelet count rises</li>
+                        <li>Could repeat every 2-3 years if stable</li>
+                    </ul>
+                </div>
+
+                <div class="section-nav">
+                    <button class="btn-secondary" onclick="navigateTo('investigation')">← Previous</button>
+                    <button class="btn-primary" onclick="markComplete('terminology'); navigateTo('management')">Next: Management →</button>
+                </div>
+            </div>
+
+            <!-- Section 5: Management -->
+            <div class="section" id="management">
+                <h2>💊 Management Strategies</h2>
+
+                <h3>1. Reactive Thrombocytosis</h3>
+                <div class="card success">
+                    <h4>Primary Strategy: Treat the Underlying Cause</h4>
+                    <ul>
+                        <li>✓ <strong>No routine antiplatelet/anticoagulant therapy</strong> unless other indications (GRADE 1C)</li>
+                        <li>✓ Standard thromboprophylaxis for hospitalized patients per local guidelines</li>
+                        <li>✓ Monitor FBC to ensure resolution</li>
+                        <li>✓ <strong>Special consideration:</strong> Iron deficiency with normal Hct - repeat FBC after iron replacement to exclude PV</li>
+                    </ul>
+                </div>
+
+                <h3>2. Hereditary Thrombocytosis</h3>
+                <div class="card">
+                    <h4>Essential Steps (GRADE 1C):</h4>
+                    <ul>
+                        <li>MDT discussion (may include genomics tumor advisory board, clinical genetics)</li>
+                        <li>Clinical monitoring for thrombosis, bleeding, myelofibrotic progression</li>
+                        <li>Cardiovascular risk factor optimization</li>
+                        <li>FBC and blood film monitoring</li>
+                    </ul>
+
+                    <h4 style="margin-top: 15px;">Aspirin (GRADE 2C) - Consider if:</h4>
+                    <ul>
+                        <li>Other cardiovascular risks present</li>
+                        <li>Family member with same variant had unexplained thrombotic episode</li>
+                        <li>Particular variant associated with high thrombosis incidence</li>
+                    </ul>
+
+                    <h4 style="margin-top: 15px;">Cytoreduction (GRADE 2C):</h4>
+                    <ul>
+                        <li><strong>NOT routine</strong></li>
+                        <li>Consider for severe intractable symptoms or recurrent thrombosis</li>
+                    </ul>
+
+                    <h4 style="margin-top: 15px;">Thrombosis Management (GRADE 1C):</h4>
+                    <ul>
+                        <li>Unexplained venous thrombosis: standard anticoagulation protocols</li>
+                        <li>Expectation of long-term anticoagulation (if acceptable bleeding risks)</li>
+                    </ul>
+                </div>
+
+                <h3>3. ITUS Management</h3>
+                <div class="card">
+                    <h4>Conservative Approach</h4>
+                    <ul>
+                        <li>❌ <strong>No routine antiplatelet therapy</strong> unless other standard indications (GRADE 1C)</li>
+                        <li>✓ Annual FBC surveillance appropriate for most with stable counts (GRADE 2C)</li>
+                        <li>✓ Community-based intermittent monitoring acceptable</li>
+                        <li>✓ Pregnancy: standard obstetric VTE prevention guidelines</li>
+                    </ul>
+
+                    <h4 style="margin-top: 15px;">Re-evaluation Triggers (GRADE 2C):</h4>
+                    <ul>
+                        <li>Significant change in blood counts</li>
+                        <li>Age 60 years (for younger patients)</li>
+                        <li>New unprovoked vascular event</li>
+                        <li>Development of MPN-suggestive features</li>
+                    </ul>
+                </div>
+
+                <h3>4. ITAM / Triple-Negative ET Management</h3>
+                <div class="card success">
+                    <h4>Risk-Stratified Approach</h4>
+
+                    <p><strong>Aspirin (GRADE 2C) - Consider for:</strong></p>
+                    <ul>
+                        <li>Age >60 years</li>
+                        <li>Additional cardiovascular risk factors (hypertension, diabetes, hypercholesterolaemia, smoking)</li>
+                        <li>Refractory symptoms</li>
+                    </ul>
+
+                    <p style="margin-top: 15px;"><strong>Cytoreduction (GRADE 2B) - Consider for:</strong></p>
+                    <ul>
+                        <li>Age >60 years</li>
+                        <li>Thrombotic/haemorrhagic event where thrombocytosis implicated</li>
+                        <li>Persistent platelets >1500×10⁹/L</li>
+                        <li>Refractory symptoms</li>
+                        <li>Multiple cardiovascular risk factors</li>
+                    </ul>
+
+                    <p style="margin-top: 15px;"><strong>Agent Selection:</strong></p>
+                    <ul>
+                        <li><strong>Interferon-alpha may be favoured</strong> (no DNA-damaging mechanism) if no contraindications</li>
+                        <li>No evidence favouring any particular agent otherwise</li>
+                    </ul>
+                </div>
+
+                <div class="card warning">
+                    <h4>Platelet Count Targets (GRADE 1C)</h4>
+                    <p>Should reflect treatment indication:</p>
+                    <ul>
+                        <li><strong>Symptoms:</strong> Aim for resolution</li>
+                        <li><strong>Extreme thrombocytosis:</strong> <1500×10⁹/L</li>
+                        <li><strong>Age/vascular risk without events:</strong> <600×10⁹/L</li>
+                        <li><strong>Otherwise unexplained vascular events:</strong> Normal range</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h4>Surgery Considerations (GRADE 2C)</h4>
+                    <p>Consider temporary cytoreduction if:</p>
+                    <ul>
+                        <li>Marked thrombocytosis (>1000×10⁹/L)</li>
+                        <li>Reduced von Willebrand factor activity levels</li>
+                    </ul>
+                </div>
+
+                <h3>5. CTUS Management</h3>
+                <div class="card warning">
+                    <h4>More Conservative Than ITAM</h4>
+
+                    <p><strong>Cytoreduction (GRADE 2D):</strong></p>
+                    <ul>
+                        <li>Only if pronounced thrombocytosis thought contributing to:
+                            <ul>
+                                <li>Refractory symptoms, OR</li>
+                                <li>Otherwise unexplained vascular event</li>
+                            </ul>
+                        </li>
+                    </ul>
+
+                    <p style="margin-top: 15px;"><strong>Cardiovascular Risk Factors:</strong></p>
+                    <ul>
+                        <li><strong>Especially important</strong> given CH associations</li>
+                        <li>Smoking cessation critical (smoking increases CH risk)</li>
+                    </ul>
+
+                    <p style="margin-top: 15px;"><strong>Could consider aspirin</strong> based on other indications (cardiovascular disease, risk score)</p>
+
+                    <p style="margin-top: 15px;"><strong>Patient Counselling:</strong></p>
+                    <ul>
+                        <li>Benefits of aspirin/cytoreduction are <strong>uncertain</strong></li>
+                        <li>Shared decision-making essential</li>
+                    </ul>
+                </div>
+
+                <h3>6. Triple-Negative ET with Clonal Marker(s)</h3>
+                <div class="card">
+                    <h4>Follow ITAM Guidance</h4>
+                    <ul>
+                        <li>Low threshold for repeat BM/genomic assessment if atypical features develop:
+                            <ul>
+                                <li>Unexplained/disproportionate cytopenias on cytoreduction</li>
+                                <li>New monocytosis</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+
+                <h3>General Principles Across All Categories</h3>
+                <div class="key-points">
+                    <h3 style="color: white; border-bottom: 2px solid rgba(255,255,255,0.3); padding-bottom: 10px;">Key Management Principles</h3>
+                    <ul>
+                        <li>Optimize cardiovascular risk factors in all patients (GRADE 1B)</li>
+                        <li>Expert haematopathologist review essential (GRADE 2B for ITAM)</li>
+                        <li>Low threshold for interval repeat assessment if starting therapy</li>
+                        <li>Consider re-evaluation if original assessment >5 years ago</li>
+                        <li>Individualize decisions based on patient preferences and clinical context</li>
+                    </ul>
+                </div>
+
+                <div class="section-nav">
+                    <button class="btn-secondary" onclick="navigateTo('terminology')">← Previous</button>
+                    <button class="btn-primary" onclick="markComplete('management'); navigateTo('algorithm')">Next: Algorithm →</button>
+                </div>
+            </div>
+
+            <!-- Section 6: Interactive Algorithm -->
+            <div class="section" id="algorithm">
+                <h2>🗺️ Interactive Diagnostic Algorithm</h2>
+
+                <div class="card success">
+                    <h4>💡 How to Use This Algorithm</h4>
+                    <p>Click on each decision node to reveal the next steps. This mirrors the clinical decision-making process.</p>
+                </div>
+
+                <div class="diagnostic-tree">
+                    <div class="tree-node" style="background: var(--accent-color); color: white;" onclick="toggleNode('step1')">
+                        <strong>STEP 1: Persistent Isolated Thrombocytosis >450×10⁹/L</strong><br>
+                        <small>Click to expand</small>
+                    </div>
+
+                    <div id="step1" style="display: none;">
+                        <div class="flow-arrow">↓</div>
+                        <div class="tree-node decision" onclick="toggleNode('step2')">
+                            <strong>Clinical History & Examination</strong><br>
+                            Blood film, iron studies, CRP<br>
+                            Consider: CXR (age >40), abdominal US, targeted imaging<br>
+                            <small>Click to continue</small>
+                        </div>
+
+                        <div id="step2" style="display: none;">
+                            <div class="flow-arrow">↓</div>
+                            <div class="tree-node decision">
+                                <strong>Secondary cause identified?</strong>
+                            </div>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px;">
+                                <div class="tree-node diagnosis" style="background: var(--success-color); color: white;">
+                                    <strong>YES</strong><br>
+                                    → Reactive Thrombocytosis<br>
+                                    → Treat underlying cause<br>
+                                    → Monitor FBC for resolution
+                                </div>
+                                <div class="tree-node" onclick="toggleNode('step3')">
+                                    <strong>NO</strong><br>
+                                    → Proceed to mutation screening<br>
+                                    <small>Click to continue</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="step3" style="display: none;">
+                            <div class="flow-arrow">↓</div>
+                            <div class="tree-node decision">
+                                <strong>Peripheral Blood Screening</strong><br>
+                                JAK2, CALR, MPL<br>
+                                If negative: BCR::ABL1
+                            </div>
+                            <div class="flow-arrow">↓</div>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px;">
+                                <div class="tree-node diagnosis" style="background: var(--success-color); color: white;">
+                                    <strong>JAK2/CALR/MPL POSITIVE</strong><br>
+                                    → Likely ET/PV/PMF<br>
+                                    → Consider BM biopsy<br>
+                                    → Follow MPN guidelines
+                                </div>
+                                <div class="tree-node warning" onclick="toggleNode('step4')">
+                                    <strong>TRIPLE-NEGATIVE</strong><br>
+                                    → Assess need for comprehensive investigation<br>
+                                    <small>Click to continue</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="step4" style="display: none;">
+                            <div class="flow-arrow">↓</div>
+                            <div class="tree-node decision">
+                                <strong>Risk Stratification for Comprehensive Testing</strong>
+                            </div>
+                            <div class="flow-arrow">↓</div>
+                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; margin-top: 15px;">
+                                <div class="tree-node diagnosis" style="background: var(--success-color); color: white;">
+                                    <strong>Age <60, No CV Risk</strong><br>
+                                    <strong>Platelets <600</strong><br>
+                                    → No additional investigations<br>
+                                    → Annual FBC monitoring<br>
+                                    → Re-evaluate at age 60
+                                </div>
+                                <div class="tree-node" onclick="toggleNode('step5moderate')">
+                                    <strong>Age <60, No CV Risk</strong><br>
+                                    <strong>Platelets 600-1500</strong><br>
+                                    OR unexplained symptoms<br>
+                                    <small>Click for options</small>
+                                </div>
+                                <div class="tree-node" onclick="toggleNode('step5high')">
+                                    <strong>Age >60 OR</strong><br>
+                                    <strong>CV Risk/Prior Events OR</strong><br>
+                                    <strong>Platelets >1500</strong><br>
+                                    <small>Click to continue</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="step5moderate" style="display: none;">
+                            <div class="flow-arrow">↓</div>
+                            <div class="tree-node decision" style="background: #fff3cd;">
+                                <strong>GRADE 2C: May Offer</strong><br>
+                                BM biopsy + NGS-MGP +/- cytogenetics<br>
+                                → Proceed to histology interpretation
+                            </div>
+                        </div>
+
+                        <div id="step5high" style="display: none;">
+                            <div class="flow-arrow">↓</div>
+                            <div class="tree-node decision" style="background: #d4edda;">
+                                <strong>GRADE 1C: Perform</strong><br>
+                                BM biopsy + NGS-MGP +/- cytogenetics
+                            </div>
+                            <div class="flow-arrow">↓</div>
+                            <div class="tree-node decision" onclick="toggleNode('step6')">
+                                <strong>Integrate Results</strong><br>
+                                Histology + Genomics + Clinical<br>
+                                <small>Click to see diagnostic outcomes</small>
+                            </div>
+                        </div>
+
+                        <div id="step6" style="display: none;">
+                            <div class="flow-arrow">↓</div>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px;">
+                                <div style="text-align: center;">
+                                    <div style="background: var(--primary-color); color: white; padding: 10px; border-radius: 5px; margin-bottom: 10px;">
+                                        <strong>NO Clonal Marker</strong>
+                                    </div>
+                                    <div class="tree-node diagnosis">
+                                        <strong>Normal Megakaryocytes</strong><br>
+                                        → ITUS<br>
+                                        → Conservative management
+                                    </div>
+                                    <div class="tree-node diagnosis">
+                                        <strong>Atypical Megakaryocytes</strong><br>
+                                        → ITAM<br>
+                                        → Consider aspirin/cytoreduction
+                                    </div>
+                                </div>
+                                <div style="text-align: center;">
+                                    <div style="background: var(--secondary-color); color: white; padding: 10px; border-radius: 5px; margin-bottom: 10px;">
+                                        <strong>Clonal Marker Present</strong>
+                                    </div>
+                                    <div class="tree-node diagnosis">
+                                        <strong>Normal Megakaryocytes</strong><br>
+                                        → CTUS<br>
+                                        → CV risk optimization
+                                    </div>
+                                    <div class="tree-node diagnosis">
+                                        <strong>Atypical Megakaryocytes</strong><br>
+                                        → Triple-neg ET with clonal markers<br>
+                                        → Manage as ITAM
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card warning" style="margin-top: 30px;">
+                    <h4>⚠️ Important Reminders</h4>
+                    <ul>
+                        <li>All BM histology should undergo expert haematopathologist review in MDT setting</li>
+                        <li>Consider family history and parental blood counts, especially in children</li>
+                        <li>Germline testing if pathogenic variant identified on BM NGS-MGP</li>
+                        <li>Threshold for comprehensive testing may be higher in children (e.g., 800-1000×10⁹/L)</li>
+                    </ul>
+                </div>
+
+                <div class="section-nav">
+                    <button class="btn-secondary" onclick="navigateTo('management')">← Previous</button>
+                    <button class="btn-primary" onclick="markComplete('algorithm'); navigateTo('cases')">Next: Case Scenarios →</button>
+                </div>
+            </div>
+
+            <!-- Section 7: Case Scenarios -->
+            <div class="section" id="cases">
+                <h2>🏥 Interactive Case Scenarios</h2>
+
+                <div class="card success">
+                    <h4>💡 Learning Approach</h4>
+                    <p>Each case presents a clinical scenario. Try to formulate your approach before revealing the answer!</p>
+                </div>
+
+                <!-- Case 1 -->
+                <div class="case-scenario">
+                    <h4>📋 Case 1: Young Woman with Mild Thrombocytosis</h4>
+                    <div class="case-details">
+                        <p><strong>Presentation:</strong></p>
+                        <ul>
+                            <li>35-year-old female</li>
+                            <li>Incidental finding: Platelets 550×10⁹/L</li>
+                            <li>No symptoms</li>
+                            <li>No cardiovascular risk factors</li>
+                            <li>No family history of thrombocytosis</li>
+                        </ul>
+                        <p style="margin-top: 10px;"><strong>Initial Tests:</strong></p>
+                        <ul>
+                            <li>Blood film: Normal</li>
+                            <li>Iron studies: Normal</li>
+                            <li>CRP: Normal</li>
+                            <li>JAK2, CALR, MPL: Negative</li>
+                            <li>BCR::ABL1: Negative</li>
+                        </ul>
+                        <p style="margin-top: 15px;"><strong>Question:</strong> What is your next step?</p>
+                    </div>
+                    <button class="reveal-answer" onclick="toggleAnswer('case1answer')">Reveal Answer</button>
+                    <div class="answer-box" id="case1answer">
+                        <h4>✅ Answer: Conservative Approach</h4>
+                        <p><strong>No additional investigations required</strong></p>
+                        <p><strong>Rationale:</strong></p>
+                        <ul>
+                            <li>Age <60 years</li>
+                            <li>No cardiovascular risk factors</li>
+                            <li>No prior vascular events</li>
+                            <li>Mild thrombocytosis (<600×10⁹/L)</li>
+                            <li>Secondary causes excluded</li>
+                        </ul>
+                        <p style="margin-top: 15px;"><strong>Management Plan:</strong></p>
+                        <ul>
+                            <li>✓ Presumptive diagnosis: "Idiopathic thrombocytosis"</li>
+                            <li>✓ Annual FBC monitoring</li>
+                            <li>✓ Patient education on symptoms to report</li>
+                            <li>✓ No routine antiplatelet therapy</li>
+                            <li>✓ Re-evaluate if:
+                                <ul>
+                                    <li>Significant rise in platelet count</li>
+                                    <li>Age 60 years</li>
+                                    <li>New unprovoked vascular event</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Case 2 -->
+                <div class="case-scenario">
+                    <h4>📋 Case 2: Older Patient with Moderate Thrombocytosis</h4>
+                    <div class="case-details">
+                        <p><strong>Presentation:</strong></p>
+                        <ul>
+                            <li>65-year-old male</li>
+                            <li>Platelets 750×10⁹/L (stable over 6 months)</li>
+                            <li>Hypertension on treatment</li>
+                            <li>Type 2 diabetes</li>
+                            <li>Non-smoker</li>
+                        </ul>
+                        <p style="margin-top: 10px;"><strong>Initial Tests:</strong></p>
+                        <ul>
+                            <li>JAK2, CALR, MPL: Negative</li>
+                            <li>BCR::ABL1: Negative</li>
+                            <li>Secondary causes excluded</li>
+                        </ul>
+                        <p style="margin-top: 15px;"><strong>Question:</strong> What investigations should be performed?</p>
+                    </div>
+                    <button class="reveal-answer" onclick="toggleAnswer('case2answer')">Reveal Answer</button>
+                    <div class="answer-box" id="case2answer">
+                        <h4>✅ Answer: Comprehensive Investigation Required</h4>
+                        <p><strong>Perform: BM biopsy + NGS-MGP + cytogenetics (GRADE 1C)</strong></p>
+                        <p><strong>Rationale:</strong></p>
+                        <ul>
+                            <li>Age >60 years</li>
+                            <li>Significant cardiovascular risk factors (hypertension, diabetes)</li>
+                        </ul>
+                        <p style="margin-top: 15px;"><strong>Possible Outcomes & Management:</strong></p>
+                        <ul>
+                            <li><strong>NGS-MGP negative + normal megakaryocytes → ITUS</strong>
+                                <ul>
+                                    <li>Conservative management</li>
+                                    <li>Annual FBC monitoring</li>
+                                    <li>Optimize cardiovascular risks</li>
+                                </ul>
+                            </li>
+                            <li><strong>NGS-MGP negative + atypical megakaryocytes → ITAM</strong>
+                                <ul>
+                                    <li>Consider aspirin (age >60 + CV risks)</li>
+                                    <li>Possibly consider cytoreduction if multiple CV risk factors</li>
+                                    <li>Interferon-alpha may be preferred if needed</li>
+                                </ul>
+                            </li>
+                            <li><strong>CH gene mutation (e.g., DNMT3A) + normal megakaryocytes → CTUS</strong>
+                                <ul>
+                                    <li>Cardiovascular risk optimization crucial</li>
+                                    <li>Could consider aspirin based on CV risk</li>
+                                    <li>Conservative cytoreduction threshold</li>
+                                </ul>
+                            </li>
+                            <li><strong>CH gene mutation + atypical megakaryocytes → Triple-neg ET with clonal markers</strong>
+                                <ul>
+                                    <li>Manage as ITAM</li>
+                                    <li>Low threshold for repeat assessment if atypical features</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Case 3 -->
+                <div class="case-scenario">
+                    <h4>📋 Case 3: Prior Vascular Event</h4>
+                    <div class="case-details">
+                        <p><strong>Presentation:</strong></p>
+                        <ul>
+                            <li>55-year-old female</li>
+                            <li>History of unprovoked DVT 2 years ago (currently anticoagulated)</li>
+                            <li>Platelets 680×10⁹/L</li>
+                            <li>No other cardiovascular risk factors</li>
+                        </ul>
+                        <p style="margin-top: 10px;"><strong>Initial Tests:</strong></p>
+                        <ul>
+                            <li>JAK2, CALR, MPL: Negative</li>
+                            <li>Secondary causes excluded</li>
+                        </ul>
+                        <p style="margin-top: 15px;"><strong>Question:</strong> How should this patient be investigated and managed?</p>
+                    </div>
+                    <button class="reveal-answer" onclick="toggleAnswer('case3answer')">Reveal Answer</button>
+                    <div class="answer-box" id="case3answer">
+                        <h4>✅ Answer: Full Investigation Mandatory</h4>
+                        <p><strong>Perform: BM biopsy + NGS-MGP + cytogenetics (GRADE 1C)</strong></p>
+                        <p><strong>Rationale:</strong></p>
+                        <ul>
+                            <li>Prior vascular event (unprovoked DVT)</li>
+                            <li>Need to determine if thrombocytosis contributed</li>
+                            <li>Diagnosis will influence long-term management</li>
+                        </ul>
+                        <p style="margin-top: 15px;"><strong>Management Considerations by Diagnosis:</strong></p>
+                        <ul>
+                            <li><strong>If ITAM or Triple-neg ET with clonal markers:</strong>
+                                <ul>
+                                    <li>Consider cytoreduction (vascular event where thrombocytosis may be implicated)</li>
+                                    <li>Target platelets to normal range</li>
+                                    <li>Continue anticoagulation (standard for unprovoked DVT)</li>
+                                    <li>Assess for thrombophilia if not already done</li>
+                                </ul>
+                            </li>
+                            <li><strong>If ITUS or CTUS:</strong>
+                                <ul>
+                                    <li>More conservative approach</li>
+                                    <li>Carefully assess other VTE risk factors</li>
+                                    <li>Continue anticoagulation as per standard VTE guidelines</li>
+                                    <li>Optimize cardiovascular risk factors</li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <p style="margin-top: 15px;"><strong>Key Point:</strong> Presence of other provoking factors for DVT should be carefully considered when attributing the event to thrombocytosis.</p>
+                    </div>
+                </div>
+
+                <!-- Case 4 -->
+                <div class="case-scenario">
+                    <h4>📋 Case 4: Extreme Thrombocytosis</h4>
+                    <div class="case-details">
+                        <p><strong>Presentation:</strong></p>
+                        <ul>
+                            <li>42-year-old male</li>
+                            <li>Platelets 1800×10⁹/L</li>
+                            <li>No symptoms</li>
+                            <li>No cardiovascular risk factors</li>
+                        </ul>
+                        <p style="margin-top: 10px;"><strong>Initial Tests:</strong></p>
+                        <ul>
+                            <li>JAK2, CALR, MPL: Negative</li>
+                            <li>Secondary causes excluded</li>
+                        </ul>
+                        <p style="margin-top: 15px;"><strong>Question:</strong> What is your approach?</p>
+                    </div>
+                    <button class="reveal-answer" onclick="toggleAnswer('case4answer')">Reveal Answer</button>
+                    <div class="answer-box" id="case4answer">
+                        <h4>✅ Answer: Comprehensive Investigation Regardless of Age</h4>
+                        <p><strong>Perform: BM biopsy + NGS-MGP + cytogenetics (GRADE 1C)</strong></p>
+                        <p><strong>Rationale:</strong></p>
+                        <ul>
+                            <li>Platelets >1500×10⁹/L - absolute indication for full workup</li>
+                            <li>Even in young patient without risk factors</li>
+                            <li>High platelet count itself is a thrombotic and haemorrhagic risk factor</li>
+                        </ul>
+                        <p style="margin-top: 15px;"><strong>Additional Assessments:</strong></p>
+                        <ul>
+                            <li>Check for acquired von Willebrand syndrome (vWF activity levels)</li>
+                            <li>Assess bleeding history</li>
+                        </ul>
+                        <p style="margin-top: 15px;"><strong>Management:</strong></p>
+                        <ul>
+                            <li><strong>If diagnosis supports MPN (ITAM or triple-neg ET with clonal markers):</strong>
+                                <ul>
+                                    <li>Consider cytoreduction (platelets >1500 is an indication)</li>
+                                    <li>Target: <1500×10⁹/L at minimum, possibly <600×10⁹/L</li>
+                                    <li>Pre-operative cytoreduction for any invasive surgery</li>
+                                </ul>
+                            </li>
+                            <li><strong>If ITUS or CTUS:</strong>
+                                <ul>
+                                    <li>Could consider cytoreduction given extreme thrombocytosis</li>
+                                    <li>Shared decision-making with patient</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Case 5 -->
+                <div class="case-scenario">
+                    <h4>📋 Case 5: Paediatric Thrombocytosis with Family History</h4>
+                    <div class="case-details">
+                        <p><strong>Presentation:</strong></p>
+                        <ul>
+                            <li>8-year-old child</li>
+                            <li>Platelets 700×10⁹/L (stable over 1 year)</li>
+                            <li>Mother also has thrombocytosis (platelets 650)</li>
+                            <li>No symptoms</li>
+                            <li>No bleeding or thrombotic events</li>
+                        </ul>
+                        <p style="margin-top: 15px;"><strong>Question:</strong> What investigations are appropriate?</p>
+                    </div>
+                    <button class="reveal-answer" onclick="toggleAnswer('case5answer')">Reveal Answer</button>
+                    <div class="answer-box" id="case5answer">
+                        <h4>✅ Answer: Inherited Thrombocytosis Panel</h4>
+                        <p><strong>Investigations (GRADE 1B):</strong></p>
+                        <ul>
+                            <li>Exclude reactive causes</li>
+                            <li><strong>Parental blood count testing</strong> (mother already known to have thrombocytosis)</li>
+                            <li>JAK2, CALR, MPL screening</li>
+                            <li>BCR::ABL1</li>
+                            <li><strong>Inherited thrombocytosis panel</strong> (JAK2, MPL, THPO, SH2B3 germline testing)</li>
+                        </ul>
+                        <p style="margin-top: 15px;"><strong>BM Biopsy Threshold (GRADE 2C):</strong></p>
+                        <ul>
+                            <li>Higher threshold in children - consider if:
+                                <ul>
+                                    <li>Platelets 800-1000×10⁹/L in asymptomatic child</li>
+                                    <li>OR prior thrombosis/hemorrhage</li>
+                                    <li>OR pertinent symptoms</li>
+                                </ul>
+                            </li>
+                            <li>In this case (asymptomatic, platelets 700), likely not needed initially</li>
+                        </ul>
+                        <p style="margin-top: 15px;"><strong>If Hereditary Variant Identified:</strong></p>
+                        <ul>
+                            <li>MDT discussion (may include clinical genetics)</li>
+                            <li>Clinical monitoring for complications</li>
+                            <li>Risk factor optimization</li>
+                            <li><strong>Generally no therapy</strong> unless complications occur</li>
+                            <li>Family counselling</li>
+                        </ul>
+                        <p style="margin-top: 15px;"><strong>Key Point:</strong> >50% of paediatric ET is triple-negative with low complication rates. Conservative approach is appropriate.</p>
+                    </div>
+                </div>
+
+                <div class="section-nav">
+                    <button class="btn-secondary" onclick="navigateTo('algorithm')">← Previous</button>
+                    <button class="btn-primary" onclick="markComplete('cases'); navigateTo('quiz')">Next: Quiz →</button>
+                </div>
+            </div>
+
+            <!-- Section 8: Knowledge Quiz -->
+            <div class="section" id="quiz">
+                <h2>🎯 Test Your Knowledge</h2>
+
+                <div class="quiz-container">
+                    <div class="question">
+                        <h4>Question 1: What percentage of thrombocytosis is typically reactive (secondary)?</h4>
+                        <div class="options">
+                            <div class="option" onclick="selectOption(this, 1, 'B')">A) 40-50%</div>
+                            <div class="option" onclick="selectOption(this, 1, 'B')">B) >80%</div>
+                            <div class="option" onclick="selectOption(this, 1, 'B')">C) 60-70%</div>
+                            <div class="option" onclick="selectOption(this, 1, 'B')">D) 30-40%</div>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <h4>Question 2: Which gene mutations are considered "classical MPN drivers"?</h4>
+                        <div class="options">
+                            <div class="option" onclick="selectOption(this, 2, 'C')">A) DNMT3A, TET2, ASXL1</div>
+                            <div class="option" onclick="selectOption(this, 2, 'C')">B) TP53, KRAS, NRAS</div>
+                            <div class="option" onclick="selectOption(this, 2, 'C')">C) JAK2, CALR, MPL</div>
+                            <div class="option" onclick="selectOption(this, 2, 'C')">D) BCR::ABL1, PDGFRA, FGFR1</div>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <h4>Question 3: In a 35-year-old with platelets 550×10⁹/L, negative JAK2/CALR/MPL, no CV risk - what is recommended?</h4>
+                        <div class="options">
+                            <div class="option" onclick="selectOption(this, 3, 'D')">A) Immediate bone marrow biopsy</div>
+                            <div class="option" onclick="selectOption(this, 3, 'D')">B) Start aspirin therapy</div>
+                            <div class="option" onclick="selectOption(this, 3, 'D')">C) NGS myeloid gene panel on peripheral blood</div>
+                            <div class="option" onclick="selectOption(this, 3, 'D')">D) Annual FBC monitoring, no additional testing</div>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <h4>Question 4: What does ITUS stand for?</h4>
+                        <div class="options">
+                            <div class="option" onclick="selectOption(this, 4, 'B')">A) Inherited Thrombocytosis of Uncertain Significance</div>
+                            <div class="option" onclick="selectOption(this, 4, 'B')">B) Idiopathic Thrombocytosis of Undetermined Significance</div>
+                            <div class="option" onclick="selectOption(this, 4, 'B')">C) Inflammatory Thrombocytosis of Unknown Source</div>
+                            <div class="option" onclick="selectOption(this, 4, 'B')">D) Intermediate Thrombocytosis Unspecified Type</div>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <h4>Question 5: What minimum VAF threshold is proposed for CTUS diagnosis?</h4>
+                        <div class="options">
+                            <div class="option" onclick="selectOption(this, 5, 'A')">A) ≥2% (≥4% for X-linked in males)</div>
+                            <div class="option" onclick="selectOption(this, 5, 'A')">B) ≥5%</div>
+                            <div class="option" onclick="selectOption(this, 5, 'A')">C) ≥10%</div>
+                            <div class="option" onclick="selectOption(this, 5, 'A')">D) ≥1%</div>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <h4>Question 6: For ITAM management, which cytoreductive agent may be preferred?</h4>
+                        <div class="options">
+                            <div class="option" onclick="selectOption(this, 6, 'C')">A) Hydroxyurea</div>
+                            <div class="option" onclick="selectOption(this, 6, 'C')">B) Anagrelide</div>
+                            <div class="option" onclick="selectOption(this, 6, 'C')">C) Interferon-alpha</div>
+                            <div class="option" onclick="selectOption(this, 6, 'C')">D) Busulfan</div>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <h4>Question 7: What platelet threshold requires comprehensive investigation regardless of age?</h4>
+                        <div class="options">
+                            <div class="option" onclick="selectOption(this, 7, 'D')">A) >600×10⁹/L</div>
+                            <div class="option" onclick="selectOption(this, 7, 'D')">B) >800×10⁹/L</div>
+                            <div class="option" onclick="selectOption(this, 7, 'D')">C) >1000×10⁹/L</div>
+                            <div class="option" onclick="selectOption(this, 7, 'D')">D) >1500×10⁹/L</div>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <h4>Question 8: Serum TPO levels in thrombocytosis investigation are:</h4>
+                        <div class="options">
+                            <div class="option" onclick="selectOption(this, 8, 'C')">A) Essential for distinguishing reactive from clonal</div>
+                            <div class="option" onclick="selectOption(this, 8, 'C')">B) Recommended in all cases</div>
+                            <div class="option" onclick="selectOption(this, 8, 'C')">C) NOT routinely recommended (do not distinguish reactive from clonal)</div>
+                            <div class="option" onclick="selectOption(this, 8, 'C')">D) Only useful in hereditary thrombocytosis</div>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <h4>Question 9: What is the main difference between ITUS and CTUS?</h4>
+                        <div class="options">
+                            <div class="option" onclick="selectOption(this, 9, 'B')">A) Platelet count level</div>
+                            <div class="option" onclick="selectOption(this, 9, 'B')">B) Presence/absence of clonal marker</div>
+                            <div class="option" onclick="selectOption(this, 9, 'B')">C) Age of patient</div>
+                            <div class="option" onclick="selectOption(this, 9, 'B')">D) Presence of splenomegaly</div>
+                        </div>
+                    </div>
+
+                    <div class="question">
+                        <h4>Question 10: For hereditary thrombocytosis, what is the routine recommendation for cytoreduction?</h4>
+                        <div class="options">
+                            <div class="option" onclick="selectOption(this, 10, 'C')">A) All patients should receive cytoreduction</div>
+                            <div class="option" onclick="selectOption(this, 10, 'C')">B) Only if platelets >1500</div>
+                            <div class="option" onclick="selectOption(this, 10, 'C')">C) NOT routine; consider only for severe symptoms or recurrent thrombosis</div>
+                            <div class="option" onclick="selectOption(this, 10, 'C')">D) If family history of thrombosis</div>
+                        </div>
+                    </div>
+
+                    <button class="submit-quiz" onclick="submitQuiz()">Submit Quiz</button>
+                    <div id="quizResult"></div>
+                </div>
+
+                <div class="section-nav">
+                    <button class="btn-secondary" onclick="navigateTo('cases')">← Previous</button>
+                    <button class="btn-primary" onclick="markComplete('quiz'); navigateTo('summary')">Next: Summary →</button>
+                </div>
+            </div>
+
+            <!-- Section 9: Key Summary -->
+            <div class="section" id="summary">
+                <h2>⭐ Key Take-Home Messages</h2>
+
+                <div class="key-points">
+                    <h3>Essential Principles</h3>
+                    <ul>
+                        <li>Most thrombocytosis is REACTIVE - thorough exclusion of secondary causes is fundamental</li>
+                        <li>Risk-stratified investigation prevents unnecessary testing while identifying high-risk patients</li>
+                        <li>New diagnostic framework (ITUS, ITAM, CTUS) provides clinically useful subcategorization</li>
+                        <li>Triple-negative ET has distinctive natural history vs mutation-positive ET</li>
+                        <li>Management decisions require integration of histology, genomics, and clinical context</li>
+                    </ul>
+                </div>
+
+                <h3>Investigation Strategy Summary</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Clinical Scenario</th>
+                            <th>Recommended Approach</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Age <60, no CV risk, platelets <600</td>
+                            <td><strong>Annual FBC monitoring</strong> - no BM/NGS needed</td>
+                        </tr>
+                        <tr>
+                            <td>Age <60, no CV risk, platelets 600-1500 OR symptoms</td>
+                            <td><strong>May offer</strong> BM + NGS-MGP +/- cytogenetics</td>
+                        </tr>
+                        <tr>
+                            <td>Age >60 OR CV risk/prior events OR platelets >1500</td>
+                            <td><strong>Perform</strong> BM + NGS-MGP +/- cytogenetics</td>
+                        </tr>
+                        <tr>
+                            <td>Paediatric with family history</td>
+                            <td>Parental counts + <strong>inherited thrombocytosis panel</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>Diagnostic Categories at a Glance</h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin: 30px 0;">
+                    <div class="card">
+                        <h4 style="color: var(--primary-color);">ITUS</h4>
+                        <p><strong>No clonal marker + Normal MKs</strong></p>
+                        <ul>
+                            <li>No routine antiplatelet</li>
+                            <li>Annual FBC surveillance</li>
+                            <li>Re-evaluate at age 60 or if change</li>
+                        </ul>
+                    </div>
+                    <div class="card success">
+                        <h4 style="color: var(--success-color);">ITAM</h4>
+                        <p><strong>No clonal marker + Atypical MKs</strong></p>
+                        <ul>
+                            <li>Consider aspirin if age >60/CV risks</li>
+                            <li>Consider cytoreduction per indications</li>
+                            <li>IFN-α may be preferred</li>
+                        </ul>
+                    </div>
+                    <div class="card warning">
+                        <h4 style="color: var(--warning-color);">CTUS</h4>
+                        <p><strong>Clonal marker + Normal MKs</strong></p>
+                        <ul>
+                            <li>CV risk optimization crucial</li>
+                            <li>Conservative cytoreduction threshold</li>
+                            <li>Benefits of therapy uncertain</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <h4 style="color: var(--secondary-color);">Triple-neg ET with clonal markers</h4>
+                        <p><strong>Clonal marker + Atypical MKs</strong></p>
+                        <ul>
+                            <li>Manage as ITAM</li>
+                            <li>Low threshold for repeat assessment</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h3>Common Pitfalls to Avoid</h3>
+                <div class="card danger">
+                    <h4>⚠️ What NOT to Do</h4>
+                    <ul>
+                        <li>❌ Order serum TPO levels (not useful for distinguishing reactive vs clonal)</li>
+                        <li>❌ Perform BM biopsy on every young patient with mild thrombocytosis</li>
+                        <li>❌ Start aspirin routinely for ITUS or CTUS without other indications</li>
+                        <li>❌ Extrapolate thrombotic risk from mutation-positive ET to triple-negative cases</li>
+                        <li>❌ Forget to exclude secondary causes thoroughly</li>
+                        <li>❌ Ignore family history and parental blood counts in children</li>
+                    </ul>
+                </div>
+
+                <h3>Future Directions & Research Needs</h3>
+                <div class="card">
+                    <h4>Knowledge Gaps</h4>
+                    <ul>
+                        <li>Natural history and progression rates from CTUS to classical ET</li>
+                        <li>Long-term outcomes in ITUS vs ITAM</li>
+                        <li>Vascular risk stratification in triple-negative categories</li>
+                        <li>Therapeutic trials for aspirin/cytoreduction in triple-negative ET</li>
+                        <li>Whole genome sequencing utility in triple-negative thrombocytosis</li>
+                        <li>National variant curation database for rare JAK2/MPL variants</li>
+                    </ul>
+                </div>
+
+                <h3>Clinical Resources</h3>
+                <div class="card success">
+                    <h4>📚 Additional Resources</h4>
+                    <ul>
+                        <li><strong>BSH Website:</strong> Guidelines and addenda at b-s-h.org.uk</li>
+                        <li><strong>NHS England Genomic Medicine Service:</strong> National genomic test directory</li>
+                        <li><strong>Patient Support:</strong> MPN Voice for patient resources</li>
+                        <li><strong>MDT Discussion:</strong> Consider referral to specialized MPN centers for complex cases</li>
+                    </ul>
+                </div>
+
+                <div id="completionCertificate"></div>
+
+                <div class="section-nav">
+                    <button class="btn-secondary" onclick="navigateTo('quiz')">← Previous</button>
+                    <button class="btn-primary" onclick="markComplete('summary'); completeAllSections()">Complete Course ✓</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Achievement Section (Hidden initially) -->
+        <div id="achievementSection" style="display: none;">
+            <div class="achievement">
+                <h2>🎉 Congratulations!</h2>
+                <p style="font-size: 1.3em; margin: 15px 0;">You've completed the BSH Thrombocytosis Guideline Interactive Learning Platform!</p>
+                <div class="star-rating">⭐⭐⭐⭐⭐</div>
+                <p style="margin-top: 20px;">You're now equipped with expert knowledge on investigating and managing thrombocytosis without JAK2, CALR or MPL mutations.</p>
+                <p style="margin-top: 15px; font-size: 0.9em;">#BloodDoctor #MedicalEducation #Haematology</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Track completion status
+        let completedSections = new Set();
+        let selectedAnswers = {};
+        const correctAnswers = {
+            1: 'B', 2: 'C', 3: 'D', 4: 'B', 5: 'A',
+            6: 'C', 7: 'D', 8: 'C', 9: 'B', 10: 'C'
+        };
+
+        // Navigation
+        function navigateTo(sectionId) {
+            // Hide all sections
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+
+            // Show selected section
+            document.getElementById(sectionId).classList.add('active');
+
+            // Update nav buttons
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.dataset.section === sectionId) {
+                    btn.classList.add('active');
+                }
+            });
+
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            // Update progress
+            updateProgress();
+        }
+
+        // Nav button click handlers
+        document.querySelectorAll('.nav-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                navigateTo(btn.dataset.section);
+            });
+        });
+
+        // Mark section as complete
+        function markComplete(sectionId) {
+            completedSections.add(sectionId);
+            updateProgress();
+            updateNavButtons();
+        }
+
+        // Update progress bar
+        function updateProgress() {
+            const totalSections = 9;
+            const completed = completedSections.size;
+            const percentage = Math.round((completed / totalSections) * 100);
+
+            const progressBar = document.getElementById('progressBar');
+            progressBar.style.width = percentage + '%';
+            progressBar.textContent = percentage + '%';
+        }
+
+        // Update nav button styles
+        function updateNavButtons() {
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                if (completedSections.has(btn.dataset.section)) {
+                    btn.classList.add('completed');
+                }
+            });
+        }
+
+        // Toggle answer visibility
+        function toggleAnswer(answerId) {
+            const answerBox = document.getElementById(answerId);
+            answerBox.classList.toggle('show');
+        }
+
+        // Toggle algorithm nodes
+        function toggleNode(nodeId) {
+            const node = document.getElementById(nodeId);
+            if (node.style.display === 'none' || !node.style.display) {
+                node.style.display = 'block';
+            } else {
+                node.style.display = 'none';
+            }
+        }
+
+        // Quiz functionality
+        function selectOption(element, questionNum, answer) {
+            // Deselect all options in this question
+            element.parentElement.querySelectorAll('.option').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+
+            // Select this option
+            element.classList.add('selected');
+            selectedAnswers[questionNum] = answer;
+        }
+
+        function submitQuiz() {
+            let correct = 0;
+            const total = Object.keys(correctAnswers).length;
+
+            // Check answers and update styling
+            for (let q = 1; q <= total; q++) {
+                const options = document.querySelectorAll(`.question:nth-of-type(${q}) .option`);
+                options.forEach(opt => {
+                    const answer = opt.textContent.charAt(0);
+                    opt.classList.remove('selected', 'correct', 'incorrect');
+
+                    if (answer === correctAnswers[q]) {
+                        opt.classList.add('correct');
+                        if (selectedAnswers[q] === correctAnswers[q]) {
+                            correct++;
+                        }
+                    } else if (selectedAnswers[q] === answer) {
+                        opt.classList.add('incorrect');
+                    }
+                });
+            }
+
+            // Display result
+            const percentage = Math.round((correct / total) * 100);
+            const resultDiv = document.getElementById('quizResult');
+
+            let resultClass = 'quiz-result';
+            let message = '';
+
+            if (percentage >= 90) {
+                resultClass += ' achievement';
+                message = `🌟 Outstanding! ${correct}/${total} correct (${percentage}%)`;
+            } else if (percentage >= 70) {
+                resultClass += ' card success';
+                message = `✅ Great job! ${correct}/${total} correct (${percentage}%)`;
+            } else if (percentage >= 50) {
+                resultClass += ' card warning';
+                message = `📖 Good effort! ${correct}/${total} correct (${percentage}%). Review the material and try again!`;
+            } else {
+                resultClass += ' card danger';
+                message = `📚 ${correct}/${total} correct (${percentage}%). Please review the guideline sections again.`;
+            }
+
+            resultDiv.className = resultClass;
+            resultDiv.textContent = message;
+            resultDiv.style.display = 'block';
+
+            // Mark quiz as complete if passed
+            if (percentage >= 70) {
+                markComplete('quiz');
+            }
+        }
+
+        // Complete all sections
+        function completeAllSections() {
+            markComplete('summary');
+            document.getElementById('achievementSection').style.display = 'block';
+            document.getElementById('achievementSection').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Initialize on load
+        document.addEventListener('DOMContentLoaded', () => {
+            updateProgress();
+        });
+    </script>
+</body>
+</html>
